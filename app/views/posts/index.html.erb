@@ -1,0 +1,25 @@
+<% @posts.each do |post| %>
+<div class="post">
+    <div class="postl"></div>
+    <div class="postc">
+        <div class="post_title" id="p_t_<%= post[:id] %>">
+          <%= post[:title] %>
+        </div>
+        <div class="post_actions" id="p_a_<%= post[:id] %>">
+            <span class="post_action_date">
+              <%= post[:created_at].strftime("%b %d, %Y") %>
+            </span>
+            <a class="post_action_twitter" href="http://www.twitter.com/share?text=<%=
+            post[:title].gsub(' ', '+')
+            %>+at&amp;url=http://yannis.chatz.gr<%= post_path(post) %>"></a>
+            <a class="post_action_facebook" href="http://www.facebook.com/sharer.php?u=http://yannis.chatz.gr<%=
+            post_path(post) %>"></a>
+        </div>
+        <div class="post_content" id="p_c_<%= post[:id] %>"><%=
+          post[:content].html_safe
+        %></div>
+    </div>
+    <div class="postr"></div>
+</div>
+<div style="height: 50px; clear: both;"></div>
+<% end %>

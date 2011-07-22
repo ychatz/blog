@@ -1,0 +1,12 @@
+.bundle
+db/*.sqlite3
+log/*.log
+config/database.yml
+config/admin.yml
+config/initializers/secret_token.rb
+public/blog
+public/images/postdata/
+public/fonts/
+public/images/icons/
+tmp/
+Gemfile.lock

@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us"> 
+  <head>
+    <%= stylesheet_link_tag :all %>
+    <%= javascript_include_tag :all %>
+    <%= csrf_meta_tag %>
+    <meta name="author" content="Yannis Chatzimichos" /> 
+    <%= yield :head %>
+
+    <title><%= ( defined?(@pageTitle) ? @pageTitle : "Yannis Chatzimichos" ) %></title>
+
+    <% if !Rails.env.development? %>
+      <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-23046377-2']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+      </script>
+    <% end %>
+  </head>
+  <body>
+    <div id="header">
+      <%= link_to @info["title"], posts_path %>
+    </div>
+    <div id="motto">
+      <%= @info["motto"] %>
+    </div>
+
+
+    <div id="content">
+      <%= yield %>
+    </div>
+    <div id="footer">
+      <div id="footer_content">
+        <div class="footer_column">
+          <h2>More of me</h2>
+          <ul>
+            <li><a href="<%= @info["email"] %>">E-mail</a></li>
+            <li><a href="<%= @info["twitter"] %>">Twitter</a></li>
+            <li><a href="<%= @info["github"] %>">Github</a></li>
+          </ul>
+          <h2 style="margin-top: 30px;">Powered by</h2>
+          <ul>
+            <li><a href="http://www.vim.org">Vim</a></li>
+            <li><a href="http://rubyonrails.org">Ruby on Rails</a></li>
+            <li><a href="http://www.nooooooooooooooo.com/">Instant no Button</a></li>
+          </ul>
+        </div>
+        <div class="footer_column">
+          <h2>Archive</h2>
+          <ul>
+            <% @archive.keys.sort.reverse.each do |date| %>
+              <li><%=
+              dateObj = Date.parse("24-" << date.gsub(/(\d+) (\d+)/, '\2-\1'))
+              link_to dateObj.strftime("%B %Y") << " (" << @archive[date].to_s << ")",
+                post_archive_path(:month => dateObj.strftime("%m"),
+                                  :year => dateObj.strftime("%Y"))
+              %></li>
+            <% end %>
+          </ul>
+        </div>
+        <div class="footer_column">
+          <h2>Featured Articles</h2>
+          <ul>
+            <% @featured.each do |post| %>
+              <li><%= link_to post.title, post_path(post) %></li>
+            <% end %>
+          </ul>
+        </div>
+        <div class="footer_column footer_column_last">
+          <h2>Most Recent</h2>
+          <ul>
+            <% @recent.each do |post| %>
+              <li><%= link_to post.title, post_path(post) %></li>
+            <% end %>
+          </ul>
+          <h2 style="margin-top: 30px;">Meta</h2>
+          <ul>
+            <li id="rss-link"><%= link_to "RSS Feed", posts_path(:format => "atom") %></li>
+            <li id="xhtml-link"><a href="http://validator.w3.org/check?uri=http%3A%2F%2Fyannis.chatz.gr%2Fblog">Valid XHTML</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function hide_actions(idstr) {
+                var id = idstr.pop();
+
+                $("#p_a_" + id).delay(600).animate({ top: -30 }, 200);
+                $("#p_c_" + id).delay(600).animate({ top: -30 }, 200);
+            }
+
+            function show_actions(idstr) {
+                var id = idstr.pop();
+
+                $("#p_a_" + id).stop(true).animate({ top: 0 }, 200);
+                $("#p_c_" + id).stop(true).animate({ top: 0 }, 200);
+            }
+
+            $(".post_title, .post_actions").mouseover(function() {
+                show_actions($(this).attr("id").split("_"));
+            });
+
+            $(".post_title, .post_actions").mouseleave(function() {
+                hide_actions($(this).attr("id").split("_"));
+            });
+
+            $("#content a").mouseover(function() {
+               $(this).animate({ opacity: 1 }, 100);
+            });
+
+            $("#content a").mouseleave(function() {
+                $(this).animate({ opacity: 0.5 }, 100);
+            });
+
+            $(".post_action_twitter").click(function() {
+                window.open($(this).attr("href"), "share_twitter", "resizable=1,width=450,height=250");
+                return false;
+            });
+
+            $(".post_action_facebook").click(function() {
+                window.open($(this).attr("href"), "share_facebook", "resizable=1,width=450,height=250");
+                return false;
+            });
+        });
+    </script> 
+  </body>
+</html>

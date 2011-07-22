@@ -1,0 +1,17 @@
+<h1>Editing post</h1>
+
+<%= form_for @post do |f| %>
+  <%= f.label :title %>:<br />
+  <%= f.text_field :title %><br />
+
+  <%= f.label :content %>:<br />
+  <%= f.text_area :content %><br />
+
+  <%= f.submit %>
+<% end %>
+
+<!--<%= render 'form' %>-->
+
+<%= link_to 'Show', @post %> |
+<%= link_to 'Back', posts_path %>
+<br /><br />
