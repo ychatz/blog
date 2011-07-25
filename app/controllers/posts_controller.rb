@@ -17,9 +17,6 @@ class PostsController < ApplicationController
   end
 
   def show
-    if !admin? && @post.deleted
-      redirect_to posts_path
-    end
   end
 
   def new
